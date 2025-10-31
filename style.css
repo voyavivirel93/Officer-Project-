@@ -14,7 +14,10 @@ body {
   justify-content: center;     /* tetap center di sisi horizontal */
   min-height: 100vh;           /* penuh setinggi layar */
   padding: 5vh 0;              /* beri jarak atas-bawah yang proporsional */
-  background-attachment: fixed; /* menjaga background tetap stabil */
+  background-attachment: scroll; /* menjaga background tetap stabil */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .bg-overlay {
