@@ -262,7 +262,7 @@ input {
 .custom-alert-box p {
   margin-bottom: 1rem; /* Jarak antara pesan dan tombol */
   line-height: 1.6; /* Keterbacaan yang lebih baik */
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .custom-alert-box p b {
