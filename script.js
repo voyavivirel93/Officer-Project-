@@ -1,8 +1,8 @@
 (function() {
   
-  // =============================================
-  // == DATA POIN CHIEF CHARMS (BERDASARKAN GAMBAR) ==
-  // =============================================
+  // ================================================
+  // == UPDATE DATA POIN CHARMS & TROOPS/PROMOTION ==
+  // ================================================
   const CHARM_POINTS = {
     1: 625,    //
     2: 1250,   //
@@ -17,8 +17,28 @@
     11: 16000  //
   };
   // =============================================
+  
+  // =============================================
+  //        == DATA POIN TROOPS 2025 ==
+  // =============================================
+  const TROOP_POINTS = {
+    0: 0,
+    1: 1,
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 6,
+    6: 9,
+    7: 12,
+    8: 17,
+    9: 22,
+    10: 30,
+    11: 37
+  };
+  // ============================================= //
 
-  // --- Ambil Elemen DOM ---
+
+  // --- Ambil Elemen DOM --- //
   const staticRows = [...document.querySelectorAll('#calcTable tr')]
     .filter(r => r.querySelector('[data-point]')); // Baris statis (shard, training)
   const totalDisplay = document.getElementById('grandTotal');
@@ -89,11 +109,17 @@
     charmRowCount++;
   }
 
-  // === Hitung selisih level promo ===
-  function promoDiff() {
-    const from = num(promoFrom.value);
-    const to = num(promoTo.value);
-    return Math.max(0, to - from);
+  // === Hitung selisih POIN promo (LOGIKA BARU) ===
+  function getPromoPointDiff() {
+    const fromLevel = num(promoFrom.value);
+    const toLevel = num(promoTo.value);
+    
+    // Ambil poin dari data TROOP_POINTS
+    const fromPoints = TROOP_POINTS[fromLevel] || 0;
+    const toPoints = TROOP_POINTS[toLevel] || 0;
+    
+    // Kembalikan selisih poinnya
+    return Math.max(0, toPoints - fromPoints);
   }
 
   // === Hitung total keseluruhan ===
@@ -109,17 +135,15 @@
       grandTotal += total;
     });
 
-    // 2. Hitung semua baris charm (LOGIKA BARU)
+    // 2. Hitung semua baris charm
     const CHARM_MULTIPLIER = 70; // <-- Aturan "70 Poin"
     
     document.querySelectorAll('.charm-row').forEach(row => {
       const level = num(row.querySelector('.charm-level-select').value);
       const basePoints = CHARM_POINTS[level] || 0; // e.g., 13.000
       
-      // ==== PERUBAHAN DI SINI ====
       // Tampilkan poin dasar (13.000) di kolom "Point"
       row.querySelector('.charmPointCell').textContent = format(basePoints);
-      // ===========================
 
       // Hitung total akhir
       const pointsPerItem = basePoints * CHARM_MULTIPLIER; // e.g., 13.000 * 70 = 910.000
@@ -130,13 +154,15 @@
       grandTotal += total;
     });
 
-    // 3. Hitung baris promo
+    // 3. Hitung baris promo (LOGIKA BARU)
     const promoRow = document.querySelector('.promotion-select')?.closest('tr');
     if (promoRow) {
-      const diff = promoDiff();
-      promoRow.querySelector('.diffCell').textContent = diff;
+      const pointDifference = getPromoPointDiff(); // <-- Menggunakan fungsi baru
+      promoRow.querySelector('.diffCell').textContent = pointDifference; // <-- Menampilkan selisih POIN
+      
       const a = num(promoRow.querySelector('.promoAmount').value);
-      const promoTotal = diff * a;
+      const promoTotal = pointDifference * a; // <-- Total = (Selisih Poin * Jumlah)
+      
       promoRow.querySelector('.totalCell').textContent = format(promoTotal);
       grandTotal += promoTotal;
     }
@@ -267,10 +293,10 @@
   backBtn?.addEventListener('click', e => {
     e.preventDefault();
     
-    // Ganti dengan info Anda
+    // === ISI PESAN BOX ALERT === //
     showCustomAlert(
   'Every small support brings warmth in a frozen world ❄️<br><br>' +
-  'Thank you for using this calculator.<br><br>' +
+  'Thank you for using this calculator.<br>' +
   'I’ll keep improving this page to make it even more useful for all players.<br><br>' +
   'If you’d like to share your spirit and support the development of this page, you can do so through the link below:<br>' + '↓<br>' +
   '<a href="https://buymeacoffee.com/voyavivirel" target="_blank" style="color:#00bfff;text-decoration:none;font-weight:bold;">❤️‍🔥 Support This Page’s Development ❤️‍🔥</a>'
@@ -278,11 +304,37 @@
   });
   
   // ===============================================
-  // === AKHIR BAGIAN YANG DIUBAH ===
+  //      === AKHIR BAGIAN YANG DIUBAH ===
   // ===============================================
 
   // === Tema Gelap/Terang ===
   const savedTheme = localStorage.getItem('officerTheme') || 'dark';
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+    themeToggle.textContent = '☀️';
+  }
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    const isLight = document.body.classList.contains('light');
+    themeToggle.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('officerTheme', isLight ? 'light' : 'dark');
+  });
+
+  // === Event Listener Statis ===
+  // Input statis
+  staticRows.forEach(row => {
+    row.querySelector('.amountInput').addEventListener('input', updateTotals);
+  });
+  // Input promo
+  document.querySelector('.promoAmount').addEventListener('input', updateTotals);
+  promoFrom.addEventListener('change', updateTotals);
+  promoTo.addEventListener('change', updateTotals);
+
+  // === Inisialisasi ===
+  loadState();  // Load dulu
+  updateTotals(); // Baru hitung total awal
+})();
+getItem('officerTheme') || 'dark';
   if (savedTheme === 'light') {
     document.body.classList.add('light');
     themeToggle.textContent = '☀️';
