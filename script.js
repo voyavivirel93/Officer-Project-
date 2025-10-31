@@ -269,11 +269,12 @@
     
     // Ganti dengan info Anda
     showCustomAlert(
-  'Setiap dukungan kecil membawa kehangatan di tengah dunia yang beku ❄️<br><br>' +
-  'Terima kasih telah menggunakan kalkulator ini — aku akan terus menyempurnakan halaman ini agar semakin bermanfaat bagi semua pemain.<br><br>' +
-  'Jika kamu ingin berbagi semangat dan mendukung pengembangan halaman ini, kamu bisa melakukannya melalui tautan berikut:<br>' + '↓<br>' +
-  '<a href="https://buymeacoffee.com/voyavivirel" target="https://buymeacoffee.com/voyavivirel" style="color:#00bfff;text-decoration:none;font-weight:bold;">❤️‍🔥 Dukung Pengembangan Halaman Ini ❤️‍🔥</a>'
-    );
+  'Every small support brings warmth in a frozen world ❄️<br><br>' +
+  'Thank you for using this calculator.<br><br>' +
+  'I’ll keep improving this page to make it even more useful for all players.<br><br>' +
+  'If you’d like to share your spirit and support the development of this page, you can do so through the link below:<br>' + '↓<br>' +
+  '<a href="https://buymeacoffee.com/voyavivirel" target="_blank" style="color:#00bfff;text-decoration:none;font-weight:bold;">❤️‍🔥 Support This Page’s Development ❤️‍🔥</a>'
+);
   });
   
   // ===============================================
