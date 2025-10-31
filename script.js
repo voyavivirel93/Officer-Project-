@@ -272,7 +272,7 @@
   'Setiap dukungan kecil membawa kehangatan di tengah dunia yang beku ❄️<br><br>' +
   'Terima kasih telah menggunakan kalkulator ini — aku akan terus menyempurnakan halaman ini agar semakin bermanfaat bagi semua pemain.<br><br>' +
   'Jika kamu ingin berbagi semangat dan mendukung pengembangan halaman ini, kamu bisa melakukannya melalui tautan berikut:<br>' + '↓<br>' +
-  '<a href="..." target="404 not found" style="color:#00bfff;text-decoration:none;font-weight:bold;">❤️‍🔥 Dukung Pengembangan Halaman Ini ❤️‍🔥</a>'
+  '<a href="https://buymeacoffee.com/voyavivirel" target="https://buymeacoffee.com/voyavivirel" style="color:#00bfff;text-decoration:none;font-weight:bold;">❤️‍🔥 Dukung Pengembangan Halaman Ini ❤️‍🔥</a>'
     );
   });
   
