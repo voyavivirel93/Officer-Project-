@@ -10,11 +10,11 @@ html {
 
 body {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 180vh;
-  padding-top: 20%;
-  padding-bottom: auto;
+  align-items: flex-start;     /* agar bisa scroll kalau konten tinggi */
+  justify-content: center;     /* tetap center di sisi horizontal */
+  min-height: 100vh;           /* penuh setinggi layar */
+  padding: 5vh 0;              /* beri jarak atas-bawah yang proporsional */
+  background-attachment: fixed; /* menjaga background tetap stabil */
 }
 
 .bg-overlay {
