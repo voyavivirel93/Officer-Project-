@@ -44,7 +44,7 @@ header {
 
 .title {
   font-weight: 800;
-  font-size: clamp(18px, 2.5vw, 1.2rem);
+  font-size: clamp(16px, 2.5vw, 1.2rem);
   text-align: center;
   letter-spacing: 0.5px;
   flex: 1;
@@ -61,7 +61,7 @@ header {
   color: rgba(255, 255, 255, 1);
   text-outline: 8px #ffffff;
   letter-spacing: 0.5px;
-  font-size: 19px;
+  font-size: 16px;
   font-weight: 800;
   margin-bottom: 1rem; /* Opsi: Menambah sedikit spasi di bawah judul */
 }
