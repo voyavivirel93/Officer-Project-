@@ -16,6 +16,24 @@
     10: 15000, //
     11: 16000  //
   };
+  
+  // =============================================
+  // == 1. TAMBAHAN BARU (DATA POIN TROOPS) ==
+  // =============================================
+  const TROOP_POINTS = {
+    0: 0,    // Lv.0
+    1: 1,    // Lv.1
+    2: 2,    // Lv.2
+    3: 3,    // Lv.3
+    4: 4,    // Lv.4
+    5: 6,    // Lv.5
+    6: 9,    // Lv.6
+    7: 12,   // Lv.7
+    8: 17,   // Lv.8
+    9: 22,   // Lv.9
+    10: 30,  // Lv.10
+    11: 37   // Lv.11 (hanya untuk 'Tujuan')
+  };
   // =============================================
 
   // --- Ambil Elemen DOM ---
@@ -89,11 +107,20 @@
     charmRowCount++;
   }
 
-  // === Hitung selisih level promo ===
-  function promoDiff() {
-    const from = num(promoFrom.value);
-    const to = num(promoTo.value);
-    return Math.max(0, to - from);
+  // =============================================
+  // == 2. PERUBAHAN FUNGSI (dari level ke poin) ==
+  // =============================================
+  // === Hitung selisih POIN promo ===
+  function promoPointDiff() {
+    const fromLvl = num(promoFrom.value); // Misal: 2
+    const toLvl = num(promoTo.value);   // Misal: 5
+
+    // Ambil poin berdasarkan level dari data TROOP_POINTS
+    const fromPoints = TROOP_POINTS[fromLvl] || 0; // Poin Lv.2 adalah 2
+    const toPoints = TROOP_POINTS[toLvl] || 0;     // Poin Lv.5 adalah 6
+
+    // Hitung selisih poinnya (6 - 2 = 4)
+    return Math.max(0, toPoints - fromPoints);
   }
 
   // === Hitung total keseluruhan ===
@@ -116,10 +143,8 @@
       const level = num(row.querySelector('.charm-level-select').value);
       const basePoints = CHARM_POINTS[level] || 0; // e.g., 13.000
       
-      // ==== PERUBAHAN DI SINI ====
       // Tampilkan poin dasar (13.000) di kolom "Point"
       row.querySelector('.charmPointCell').textContent = format(basePoints);
-      // ===========================
 
       // Hitung total akhir
       const pointsPerItem = basePoints * CHARM_MULTIPLIER; // e.g., 13.000 * 70 = 910.000
@@ -133,7 +158,10 @@
     // 3. Hitung baris promo
     const promoRow = document.querySelector('.promotion-select')?.closest('tr');
     if (promoRow) {
-      const diff = promoDiff();
+      // =============================================
+      // == 3. PERUBAHAN PANGGILAN FUNGSI ==
+      // =============================================
+      const diff = promoPointDiff(); // <-- DIUBAH DARI promoDiff()
       promoRow.querySelector('.diffCell').textContent = diff;
       const a = num(promoRow.querySelector('.promoAmount').value);
       const promoTotal = diff * a;
@@ -226,11 +254,10 @@
   });
   
   // ===============================================
-  // === BAGIAN YANG DIUBAH (MODAL DONASI) ===
+  // === BAGIAN MODAL DONASI (TIDAK DIUBAH) ===
   // ===============================================
   
   // --- Ambil Elemen Modal ---
-  // (Pastikan Anda sudah menambahkan HTML-nya di index.html)
   const customAlertOverlay = document.getElementById('customAlertOverlay');
   const customAlertMessage = document.getElementById('customAlertMessage');
   const customAlertClose = document.getElementById('customAlertClose');
@@ -262,7 +289,7 @@
     });
   }
 
-  // === UBAHAN Event Listener Back button ===
+  // === Event Listener Back button ===
   const backBtn = document.querySelector('.back-btn');
   backBtn?.addEventListener('click', e => {
     e.preventDefault();
@@ -278,11 +305,37 @@
   });
   
   // ===============================================
-  // === AKHIR BAGIAN YANG DIUBAH ===
+  // === AKHIR BAGIAN MODAL ===
   // ===============================================
 
   // === Tema Gelap/Terang ===
   const savedTheme = localStorage.getItem('officerTheme') || 'dark';
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+    themeToggle.textContent = '☀️';
+  }
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    const isLight = document.body.classList.contains('light');
+    themeToggle.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('officerTheme', isLight ? 'light' : 'dark');
+  });
+
+  // === Event Listener Statis ===
+  // Input statis
+  staticRows.forEach(row => {
+    row.querySelector('.amountInput').addEventListener('input', updateTotals);
+  });
+  // Input promo
+  document.querySelector('.promoAmount').addEventListener('input', updateTotals);
+  promoFrom.addEventListener('change', updateTotals);
+  promoTo.addEventListener('change', updateTotals);
+
+  // === Inisialisasi ===
+  loadState();  // Load dulu
+  updateTotals(); // Baru hitung total awal
+})();
+tem('officerTheme') || 'dark';
   if (savedTheme === 'light') {
     document.body.classList.add('light');
     themeToggle.textContent = '☀️';
